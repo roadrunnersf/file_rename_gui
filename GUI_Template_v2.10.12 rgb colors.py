@@ -46,6 +46,8 @@ class attrdict(dict):
 def rgb_tk(rgb):
     # translates an rgb tuple of int to a tkinter friendly color code
     return "#%02x%02x%02x" % rgb
+    # some change
+    bla = 12345
 
 
 def is_part(some_string, target):
