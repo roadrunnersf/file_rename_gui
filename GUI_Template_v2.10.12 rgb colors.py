@@ -134,7 +134,15 @@ def dialog_generic(dialog_title, dialog_text, dialog_function):
 # ==================================================================
 # dtry = os.listdir("C:\Users\Sam\Documents\myPython")
 # dtry = os.listdir("C:\Users\Sam\Downloads")
-default_folder = r'C:\Users\samgf\OneDrive\Documents\my_python\Testing\Testing'
+
+
+default_folder = ''
+if os.getenv('username') == 'samgf':
+    default_folder = r'C:\Users\samgf\OneDrive\Documents\my_python\Testing\Testing'
+else:
+    default_folder = ''
+
+
 log_separator = '-----complete.'
 total_files_limit = 100
 dtry = []
@@ -326,7 +334,7 @@ def populate_files():  # populate file columns and buttons
 
             ents[:] = []  # clear list
 
-            # make 3 identical file lists within ents
+            # make 4 identical file lists within ents
             for i in range(4):
                 ents.append([])
 
