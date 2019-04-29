@@ -194,7 +194,7 @@ def load_dtry(fldr):
     dtry.append(get_all_folder_paths(fldr))
     for i in range(3):
         dtry.append(get_all_files(fldr))
-
+    print(dtry)
     # change the lists:
     # old file name list without extension
     for i, name in enumerate(dtry[col.old]):
@@ -205,7 +205,7 @@ def load_dtry(fldr):
     # list of extensions for files
     for i, name in enumerate(dtry[col.ext]):
         dtry[col.ext][i] = file_ext(dtry[col.ext][i])
-
+    print(dtry)
 
 def replace_entry_text(an_entry, some_text):
     an_entry.delete(0, tk.END)
@@ -263,7 +263,7 @@ lbl_intro.grid(row=0, column=0)
 
 # folder name Entry box
 ent_folder = tk.Entry(fr_intro)
-ent_folder.bind("<Return>", (lambda event: populate_files()))
+ent_folder.bind("<Return>", (lambda event: populate_button()))
 ent_folder.insert(tk.END, str(default_folder))
 ent_folder.grid(row=1, column=0)
 
@@ -321,47 +321,51 @@ def rename_files():
     print(log_separator)
 
 
-def populate_files():  # populate file columns and buttons
+def populate():
+    for x in ents:
+        for y in x:
+            y.destroy()
+
+    Buttons['clear']['widget'].grid(row=Buttons['clear']['row'], column=1)
+
+    ents[:] = []  # clear list
+
+    # make 4 identical file lists within ents
+    for i in range(4):
+        ents.append([])
+
+    load_dtry(ent_folder.get())  # update dtry with current folder address
+    colconfig = [2, 2, 2, 1]
+    # title row
+    title_row = ["Folder", "Old File Name", "New File Name", "Extension"]
+    for t in range(len(title_row)):
+        title_label = tk.Label(fr_files, bg=colors['blue_light'], text=title_row[t])
+        title_label.grid(row=1, column=t, sticky=tk.W)  # , columnspan=colconfig[t])
+        fr_files.grid_columnconfigure(t, weight=1)
+        titles_widgets.append(title_label)  # add title to titles widget list
+
+    for x in range(len(title_row)):
+        # columns for files
+        for i, name in enumerate(dtry[x]):  # loop through all files in each sublist of dtry
+            ent = tk.Entry(fr_files)  # , sticky=1)  # width=38)  # set up widget 2
+            ent.insert(tk.END, str(name))  # add text to widget
+            ent.grid(row=i + 1 + files_start_row, column=x,
+                     sticky=tk.W + tk.E, columnspan=colconfig[x])  # place widget on grid
+
+            # print(colconfig[x])
+            ents[x].append(ent)  # add widget to ents list
+
+    Buttons['rename all']['widget'].grid(row=2, column=0)
+    # OLD LOCATION IN fr_files Buttons['rename all']['widget'].grid(row=files_start_row + len(dtry[col.dir]) + 1, column=0, pady=10)
+
+
+def populate_button():  # populate file columns and buttons
     print("Populate-----")
     try:
         total_files = sum([len(files) for r, d, files in os.walk(ent_folder.get())])
         if 0 < total_files <= total_files_limit:
             print(f'Folder has {total_files} files inside. Writing to window...')
-            for x in ents:
-                for y in x:
-                    y.destroy()
-
-            Buttons['clear']['widget'].grid(row=Buttons['clear']['row'], column=1)
-
-            ents[:] = []  # clear list
-
-            # make 4 identical file lists within ents
-            for i in range(4):
-                ents.append([])
-
-            load_dtry(ent_folder.get())  # update dtry with current folder address
-            colconfig = [2, 2, 2, 1]
-            # title row
-            title_row = ["Folder", "Old File Name", "New File Name", "Extension"]
-            for t in range(len(title_row)):
-                title_label = tk.Label(fr_files, bg=colors['blue_light'], text=title_row[t])
-                title_label.grid(row=1, column=t, sticky=tk.W)  # , columnspan=colconfig[t])
-                fr_files.grid_columnconfigure(t, weight=1)
-                titles_widgets.append(title_label)  # add title to titles widget list
-
-            for x in range(len(title_row)):
-                # columns for files
-                for i, name in enumerate(dtry[x]):  # loop through all files in each sublist of dtry
-                    ent = tk.Entry(fr_files)  # , sticky=1)  # width=38)  # set up widget 2
-                    ent.insert(tk.END, str(name))  # add text to widget
-                    ent.grid(row=i + 1 + files_start_row, column=x,
-                             sticky=tk.W + tk.E, columnspan=colconfig[x])  # place widget on grid
-
-                    # print(colconfig[x])
-                    ents[x].append(ent)  # add widget to ents list
-
-            Buttons['rename all']['widget'].grid(row=2, column=0)
-            # OLD LOCATION IN fr_files Buttons['rename all']['widget'].grid(row=files_start_row + len(dtry[col.dir]) + 1, column=0, pady=10)
+            populate()
         elif total_files == 0:
             print('Folder has no files inside')
         elif total_files > total_files_limit:
@@ -397,7 +401,7 @@ def clear_files():
 # set up rename button but do not pack
 Buttons = {
     'populate': {
-        'command': populate_files,
+        'command': populate_button,
         'row': 0,
         'column': 1,
         'grid_on_start': True,
