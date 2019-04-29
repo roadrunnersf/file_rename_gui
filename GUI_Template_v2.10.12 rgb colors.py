@@ -87,35 +87,35 @@ def snip_start(input_string, chars):
 
 def name_cleaner_tv(nmc):
 
-    f = nmc
-    f = f.lower()  # lowercase for ease of search/replace
-    f = f.replace('.', ' ')  # replace period with space
-    f = f.replace('_', ' ')  # replace underscore with space
+    tv = nmc
+    tv = tv.lower()  # lowercase for ease of search/replace
+    tv = tv.replace('.', ' ')  # replace period with space
+    tv = tv.replace('_', ' ')  # replace underscore with space
     for x in [' 1080p', ' 720p', ' 2160p']:
-        f = snip_text_after(f, x)
-    f = f.replace('repack', '')  # delete repack
-    f = f.replace('remastered', '')  # delete remastered
+        tv = snip_text_after(tv, x)
+    tv = tv.replace('repack', '')  # delete repack
+    tv = tv.replace('remastered', '')  # delete remastered
     for x in range(3):
-        f = f.replace('  ', ' ')  # delete double spaces
-    if f.endswith(' '):
-        f = snip_end(f, 1)
-    f = f.title()  # Title case
-    f = f.replace("'S", "'s")  # replace underscore with space
-    print(f)
-    print(re.sub(r'(?<=[0-9])Th', r'th', f))
-    f = re.sub(r'(?<=[0-9])Th', r'th', f)  # replace 'Th' after number
-    # lowercase short words
-    for x in "of an and for by is from etc a to".split():
-        f = f.replace(' ' + x.title() + ' ', ' ' + x + ' ')
-
-    return f
+        tv = tv.replace('  ', ' ')  # delete double spaces
+    if tv.endswith(' '):
+        tv = tv[:-1]
+    tv = tv.title()  # Title case
+    tv = tv.replace("'S", "'s")  # replace underscore with space
+    for x in ['St', 'Nd', 'Rd', 'Th']:  # 1st 2nd 3rd 4th etc
+        tv = re.sub(r'(?<=[0-9]){0}'.format(x), x.lower(), tv)
+    short_words = "of an and for by is from etc a to the".split()
+    for x in short_words:  # lowercase short words in middle of name
+        tv = tv.replace(' ' + x.title() + ' ', ' ' + x + ' ')
+    for x in short_words:  # lowercase short words at start of name
+        tv = re.sub(f'(?<=S[0-9][0-9]E[0-9][0-9] ){x}', x.title(), tv)
+    return tv
 
 
 def name_cleaner_movieyear(movie_name):
-    f = movie_name
-    f = f[:len(f) - 4] + '[' + f[len(f) - 4:]
-    f = f + ']'
-    return f
+    mv = movie_name
+    mv = mv[:len(mv) - 4] + '[' + mv[len(mv) - 4:]
+    mv = mv + ']'
+    return mv
 
 
 def dialog_find():
