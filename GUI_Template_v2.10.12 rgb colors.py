@@ -194,7 +194,7 @@ def load_dtry(fldr):
     dtry.append(get_all_folder_paths(fldr))
     for i in range(3):
         dtry.append(get_all_files(fldr))
-    print(dtry)
+
     # change the lists:
     # old file name list without extension
     for i, name in enumerate(dtry[col.old]):
@@ -205,7 +205,7 @@ def load_dtry(fldr):
     # list of extensions for files
     for i, name in enumerate(dtry[col.ext]):
         dtry[col.ext][i] = file_ext(dtry[col.ext][i])
-    print(dtry)
+
 
 def replace_entry_text(an_entry, some_text):
     an_entry.delete(0, tk.END)
