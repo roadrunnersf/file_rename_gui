@@ -87,35 +87,35 @@ def snip_start(input_string, chars):
 
 def name_cleaner_tv(nmc):
 
-    flnme = nmc
-    flnme = flnme.lower()  # lowercase for ease of search/replace
-    flnme = flnme.replace('.', ' ')  # replace period with space
-    flnme = flnme.replace('_', ' ')  # replace underscore with space
+    f = nmc
+    f = f.lower()  # lowercase for ease of search/replace
+    f = f.replace('.', ' ')  # replace period with space
+    f = f.replace('_', ' ')  # replace underscore with space
     for x in [' 1080p', ' 720p', ' 2160p']:
-        flnme = snip_text_after(flnme, x)
-    flnme = flnme.replace('repack', '')  # delete repack
-    flnme = flnme.replace('remastered', '')  # delete remastered
+        f = snip_text_after(f, x)
+    f = f.replace('repack', '')  # delete repack
+    f = f.replace('remastered', '')  # delete remastered
     for x in range(3):
-        flnme = flnme.replace('  ', ' ')  # delete double spaces
-    if flnme.endswith(' '):
-        flnme = snip_end(flnme, 1)
-    flnme = flnme.title()  # Title case
-    flnme = flnme.replace("'S", "'s")  # replace underscore with space
-    print(flnme)
-    print(re.sub(r'(?<=[0-9])Th', r'th', flnme))
-    flnme = re.sub(r'(?<=[0-9])Th', r'th', flnme)  # replace 'Th' after number
+        f = f.replace('  ', ' ')  # delete double spaces
+    if f.endswith(' '):
+        f = snip_end(f, 1)
+    f = f.title()  # Title case
+    f = f.replace("'S", "'s")  # replace underscore with space
+    print(f)
+    print(re.sub(r'(?<=[0-9])Th', r'th', f))
+    f = re.sub(r'(?<=[0-9])Th', r'th', f)  # replace 'Th' after number
     # lowercase short words
     for x in "of an and for by is from etc a to".split():
-        flnme = flnme.replace(' ' + x.title() + ' ', ' ' + x + ' ')
+        f = f.replace(' ' + x.title() + ' ', ' ' + x + ' ')
 
-    return flnme
+    return f
 
 
 def name_cleaner_movieyear(movie_name):
-    flnme = movie_name
-    flnme = flnme[:len(flnme) - 4] + '[' + flnme[len(flnme) - 4:]
-    flnme = flnme + ']'
-    return flnme
+    f = movie_name
+    f = f[:len(f) - 4] + '[' + f[len(f) - 4:]
+    f = f + ']'
+    return f
 
 
 def dialog_find():
@@ -137,6 +137,7 @@ def dialog_generic(dialog_title, dialog_text, dialog_function):
 
 
 default_folder = ''
+# below if block assigns default folder to my testing folder if samgf is the user
 if os.getenv('username') == 'samgf':
     default_folder = r'C:\Users\samgf\OneDrive\Documents\my_python\Testing\Testing'
 else:
