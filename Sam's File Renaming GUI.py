@@ -256,14 +256,14 @@ fr_intro = tk.Frame(win, bg=colors['blue_light'])
 fr_intro.pack(side=tk.TOP, pady=10, anchor="w")
 
 # intro text
-lbl_intro = tk.Label(fr_intro, text='Browse for a folder, then click populate to get started.', bg=colors['blue_light'])
-lbl_intro.grid(row=0, column=0)
+lbl_intro = tk.Label(fr_intro, text='Browse for a folder, then click Populate.', anchor=tk.W, bg=colors['blue_light'])
+lbl_intro.grid(row=0, column=0, padx=3)
 
 # folder name Entry box
 ent_folder = tk.Entry(fr_intro)
 ent_folder.bind("<Return>", (lambda event: populate_button()))
 ent_folder.insert(tk.END, str(default_folder))
-ent_folder.grid(row=1, column=0)
+ent_folder.grid(row=1, column=0, sticky=tk.W + tk.E, padx=12, pady=3)
 
 
 def browse_button():
@@ -327,7 +327,7 @@ def populate():
         for y in x:
             y.destroy()
 
-    Buttons['clear']['widget'].grid(row=Buttons['clear']['row'], column=1)
+    Buttons['clear']['widget'].grid(row=Buttons['clear']['row'], column=1, pady=3)
 
     ents[:] = []  # clear list
 
@@ -344,22 +344,19 @@ def populate():
     title_row = ["Folder", "Old File Name", "New File Name", "Extension"]
     for t in range(len(title_row)):
         title_label = tk.Label(fr_files, bg=colors['blue_light'], text=title_row[t])
-        title_label.grid(row=1, column=t, sticky=tk.W)  # , columnspan=colconfig[t])
-
+        title_label.grid(row=1, column=t, sticky=tk.W)
         titles_widgets.append(title_label)  # add title to titles widget list
 
     for x in range(len(title_row)):
         # columns for files
         for i, name in enumerate(dtry[x]):  # loop through all files in each sublist of dtry
-            ent = tk.Entry(fr_files)  # , sticky=1)  # width=38)  # set up widget 2
-            ent.insert(tk.END, str(name))  # add text to widget
-            ent.grid(row=i + 1 + files_start_row, column=x, sticky=tk.W + tk.E)  # , columnspan=colconfig[x])  # place widget on grid
+            ent = tk.Entry(fr_files)
+            ent.insert(tk.END, str(name))
+            ent.grid(row=i + 1 + files_start_row, column=x, sticky=tk.W + tk.E)
 
-            # print(colconfig[x])
             ents[x].append(ent)  # add widget to ents list
 
     Buttons['rename all']['widget'].grid(row=2, column=0)
-    # OLD LOCATION IN fr_files Buttons['rename all']['widget'].grid(row=files_start_row + len(dtry[col.dir]) + 1, column=0, pady=10)
 
 
 def populate_button():  # populate file columns and buttons
