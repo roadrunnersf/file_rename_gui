@@ -137,6 +137,7 @@ default_folder = ''
 # below if block assigns default folder to my testing folder if samgf is the user
 if os.getenv('username') == 'samgf':
     default_folder = r'C:\Users\samgf\OneDrive\Documents\my_python\Testing\Testing'
+    default_folder = r'E:\TV\Oz'
 else:
     default_folder = ''
 
@@ -251,9 +252,10 @@ win.iconbitmap('Document.ico')  # icon in top left
 # intro frame including: intro text widget, folder entry
 # ==================================================================
 
-
 fr_intro = tk.Frame(win, bg=colors['blue_light'])
 fr_intro.pack(side=tk.TOP, pady=10, anchor="w")
+
+# fr_intro.pack(side=tk.TOP, pady=10, anchor="w")
 
 # intro text
 lbl_intro = tk.Label(fr_intro, text='Browse for a folder, then click Populate.', anchor=tk.W, bg=colors['blue_light'])
@@ -276,9 +278,29 @@ def browse_button():
 
 # file frame, lists
 # ==================================================================
-fr_files = tk.Frame(win, bg=colors['blue_light'])
-fr_files.pack(side=tk.BOTTOM, fill="both", expand=True)
 
+
+def update_scrollregion(event):
+    canvas_files.configure(scrollregion=canvas_files.bbox("all"))
+
+
+fr_files = tk.Frame(win, width=1650, height=190, bg='green')  # colors['blue_light'])
+fr_files.pack(side=tk.BOTTOM, fill="both", expand=True)
+'''fr_files.rowconfigure(0, weight=1)
+fr_files.columnconfigure(0, weight=1)'''
+
+canvas_files = tk.Canvas(fr_files, bg='red')  # colors['blue_light'])
+canvas_files.grid(row=0, column=0, sticky="nsew")
+
+canvas_frame = tk.Frame(canvas_files, bg="#EBEBEB")  # colors['blue_light'])
+canvas_files.create_window(0, 0, window=canvas_frame, anchor='nw')
+
+photoScroll = tk.Scrollbar(fr_files, orient=tk.VERTICAL)
+photoScroll.config(command=canvas_files.yview)
+canvas_files.config(yscrollcommand=photoScroll.set)
+photoScroll.grid(row=0, column=1, sticky="ns")
+
+canvas_frame.bind("<Configure>", update_scrollregion)
 
 '''
 fr_files.grid_columnconfigure(0, weight=3)
@@ -345,14 +367,14 @@ def populate():
     # title row
     title_row = ["Folder", "Old File Name", "New File Name", "Extension"]
     for t in range(len(title_row)):
-        title_label = tk.Label(fr_files, bg=colors['blue_light'], text=title_row[t])
+        title_label = tk.Label(canvas_frame, bg=colors['blue_light'], text=title_row[t])
         title_label.grid(row=1, column=t, sticky=tk.W)
         titles_widgets.append(title_label)  # add title to titles widget list
 
     for x in range(len(title_row)):
         # columns for files
         for i, name in enumerate(dtry[x]):  # loop through all files in each sublist of dtry
-            ent = tk.Entry(fr_files)
+            ent = tk.Entry(canvas_frame)
             ent.insert(tk.END, str(name))
             ent.grid(row=i + 1 + files_start_row, column=x, sticky=tk.W + tk.E)
 
