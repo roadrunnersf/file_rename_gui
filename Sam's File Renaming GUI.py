@@ -46,8 +46,6 @@ class attrdict(dict):
 def rgb_tk(rgb):
     # translates an rgb tuple of int to a tkinter friendly color code
     return "#%02x%02x%02x" % rgb
-    # some change
-    bla = 12345
 
 
 def is_part(some_string, target):
@@ -82,9 +80,6 @@ def snip_end(input_string, chars):
 
 def snip_start(input_string, chars):
     return input_string[chars:]
-
-
-# need to add 'the' and make sure words at start of name are not lowercased
 
 
 def name_cleaner_tv(nmc):
@@ -156,6 +151,7 @@ colors = {
     'red': rgb_tk((255, 185, 170)),
     'purple': rgb_tk((235, 185, 255)),
     'grey_light': rgb_tk((250, 250, 250)),
+    'cyan': rgb_tk((150, 230, 255)),
     'blue_light': rgb_tk((220, 240, 255))
     }
 
@@ -317,6 +313,9 @@ def rename_files():
         except FileNotFoundError:
             print("| file not found")
             ents_row_colour(colors['red'])
+        except OSError:
+            print("| invalid file name, ")
+            ents_row_colour(colors['cyan'])
         except PermissionError:
             print("| permission error")
             ents_row_colour(colors['purple'])
@@ -337,13 +336,16 @@ def populate():
         ents.append([])
 
     load_dtry(ent_folder.get())  # update dtry with current folder address
-    colconfig = [2, 2, 2, 1]
+    colconfig = [800, 800, 800, 1]
+    colconfig = [4, 4, 4, 1]
+    # colconfig = [1, 1, 1, 1]
     # title row
     title_row = ["Folder", "Old File Name", "New File Name", "Extension"]
     for t in range(len(title_row)):
+        print(t)
         title_label = tk.Label(fr_files, bg=colors['blue_light'], text=title_row[t])
         title_label.grid(row=1, column=t, sticky=tk.W)  # , columnspan=colconfig[t])
-        fr_files.grid_columnconfigure(t, weight=1)
+        fr_files.grid_columnconfigure(t, weight=colconfig[t])
         titles_widgets.append(title_label)  # add title to titles widget list
 
     for x in range(len(title_row)):
@@ -352,7 +354,7 @@ def populate():
             ent = tk.Entry(fr_files)  # , sticky=1)  # width=38)  # set up widget 2
             ent.insert(tk.END, str(name))  # add text to widget
             ent.grid(row=i + 1 + files_start_row, column=x,
-                     sticky=tk.W + tk.E, columnspan=colconfig[x])  # place widget on grid
+                     sticky=tk.W + tk.E)  #, columnspan=colconfig[x])  # place widget on grid
 
             # print(colconfig[x])
             ents[x].append(ent)  # add widget to ents list
