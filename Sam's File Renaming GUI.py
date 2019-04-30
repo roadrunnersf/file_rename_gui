@@ -336,16 +336,16 @@ def populate():
         ents.append([])
 
     load_dtry(ent_folder.get())  # update dtry with current folder address
-    colconfig = [800, 800, 800, 1]
-    colconfig = [4, 4, 4, 1]
-    # colconfig = [1, 1, 1, 1]
+
+    for i, num in enumerate([1000, 1000, 1000, 1]):
+        fr_files.grid_columnconfigure(i, weight=num)
+
     # title row
     title_row = ["Folder", "Old File Name", "New File Name", "Extension"]
     for t in range(len(title_row)):
-        print(t)
         title_label = tk.Label(fr_files, bg=colors['blue_light'], text=title_row[t])
         title_label.grid(row=1, column=t, sticky=tk.W)  # , columnspan=colconfig[t])
-        fr_files.grid_columnconfigure(t, weight=colconfig[t])
+
         titles_widgets.append(title_label)  # add title to titles widget list
 
     for x in range(len(title_row)):
@@ -353,8 +353,7 @@ def populate():
         for i, name in enumerate(dtry[x]):  # loop through all files in each sublist of dtry
             ent = tk.Entry(fr_files)  # , sticky=1)  # width=38)  # set up widget 2
             ent.insert(tk.END, str(name))  # add text to widget
-            ent.grid(row=i + 1 + files_start_row, column=x,
-                     sticky=tk.W + tk.E)  #, columnspan=colconfig[x])  # place widget on grid
+            ent.grid(row=i + 1 + files_start_row, column=x, sticky=tk.W + tk.E)  # , columnspan=colconfig[x])  # place widget on grid
 
             # print(colconfig[x])
             ents[x].append(ent)  # add widget to ents list
