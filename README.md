@@ -12,7 +12,7 @@ Operations are as follows:
 - Lowercase
 - Title case
 - Sentence case
-- TV download fixer (performs numerous operations including replacing periods with spaces, snipping superfulous information and proper casing.)
+- TV download fixer (performs numerous operations including find & repace, snipping superfulous information, fixing casing, and regex stuff)
 - Movie year fixer (adds brackets to a 4 digit year on the end of a file name)
 - Snip text before and including input string
 - Snip text after and including input string
