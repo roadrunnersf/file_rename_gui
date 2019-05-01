@@ -27,5 +27,9 @@ Dialog boxes can also be included in the operation with just a few extra lines o
 
 
 ## Future Functionality
-
+### Scrolling
 The program currently only allows up to 100 files to be displayed at once, as more than this would cause the excess fles to be pushed off the bottom of the screen. Functionality is currently being tested to add a scroll bar to allow more items to be displayed at once.
+###Improved window resizing
+This will drastically imporove the UX
+###Sub folders check box
+Allow the choice of whether or not to search in a folder's sub folders
