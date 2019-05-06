@@ -117,7 +117,8 @@ def name_cleaner_movieyear(movie_name):
 
 def dialog_find():
     find_str = simpledialog.askstring('Find', 'String to find (case sensitive).', parent=win)
-    replace_str = simpledialog.askstring('Replace', 'Replacement string (case sensitive). Leave blank to delete string from file names.', parent=win)
+    replace_str = simpledialog.askstring(
+        'Replace', 'Replacement string (case sensitive). Leave blank to delete string from file names.', parent=win)
     edit_ents(lambda y: y.replace(find_str, replace_str))
 
 
@@ -154,7 +155,7 @@ colors = {
     'grey_light': rgb_tk((250, 250, 250)),
     'cyan': rgb_tk((150, 230, 255)),
     'blue_light': rgb_tk((220, 240, 255))
-    }
+}
 
 
 col = {
@@ -162,7 +163,7 @@ col = {
     'old': 1,
     'new': 2,
     'ext': 3
-    }
+}
 
 col = attrdict(col)
 
@@ -253,12 +254,13 @@ win.iconbitmap('Document.ico')  # icon in top left
 # ==================================================================
 
 fr_intro = tk.Frame(win, bg=colors['blue_light'])
-fr_intro.pack(side=tk.TOP, pady=10, anchor="w")
+fr_intro.pack(side=tk.TOP, pady=10, anchor="w", expand=True)
 
 # fr_intro.pack(side=tk.TOP, pady=10, anchor="w")
 
 # intro text
-lbl_intro = tk.Label(fr_intro, text='Browse for a folder, then click Populate.', anchor=tk.W, bg=colors['blue_light'])
+lbl_intro = tk.Label(fr_intro, text='Browse for a folder, then click Populate.',
+                     anchor=tk.W, bg=colors['blue_light'])
 lbl_intro.grid(row=0, column=0, padx=3)
 
 # folder name Entry box
@@ -380,8 +382,6 @@ def populate():
 
             ents[x].append(ent)  # add widget to ents list
 
-
-
     Buttons['rename all']['widget'].grid(row=2, column=0)
 
 
@@ -395,7 +395,8 @@ def populate_button():  # populate file columns and buttons
         elif total_files == 0:
             print('Folder has no files inside')
         elif total_files > total_files_limit:
-            print(f'Folder (incuding subfolders) has {total_files} files inside which exceeds the limit of {total_files_limit}. Functionality has not been added yet to handle this many files')
+            print(
+                f'Folder (incuding subfolders) has {total_files} files inside which exceeds the limit of {total_files_limit}. Functionality has not been added yet to handle this many files')
         else:
             print('Unspecified folder error')
     except StopIteration:
@@ -432,32 +433,33 @@ Buttons = {
         'column': 1,
         'grid_on_start': True,
         'bg': 'white'
-        },
+    },
     'browse': {
         'command': browse_button,
         'row': 1,
         'column': 1,
         'grid_on_start': True,
         'bg': 'white'
-        },
+    },
     'clear': {
         'command': clear_files,
         'row': 2,
         'column': 1,
         'grid_on_start': False,
         'bg': colors['red']
-        },
+    },
     'rename all': {
         'command': rename_files,
         'row': 2,
         'column': 0,
         'grid_on_start': False,
         'bg': colors['green']
-        }
     }
+}
 
 for k in Buttons:
-    Buttons[k]['widget'] = tk.Button(fr_intro, text=k.capitalize(), command=Buttons[k]['command'], bg=Buttons[k]['bg'])
+    Buttons[k]['widget'] = tk.Button(fr_intro, text=k.capitalize(),
+                                     command=Buttons[k]['command'], bg=Buttons[k]['bg'])
     if Buttons[k]['grid_on_start']:
         Buttons[k]['widget'].grid(row=Buttons[k]['row'], column=Buttons[k]['column'], pady=3)
 
@@ -498,46 +500,46 @@ Menu_Commands = {
         'title': 'Exit',
         'dialog': False,
         'command': lambda: win.destroy()
-        },
+    },
     # case
     'uppercase': {
         'menu': menu_tabs['case'],
         'title': 'UPPERCASE',
         'dialog': False,
         'command': lambda: edit_ents(lambda x: x.upper())
-        },
+    },
     'lowercase': {
         'menu': menu_tabs['case'],
         'title': 'lowercase',
         'dialog': False,
         'command': lambda: edit_ents(lambda x: x.lower())
-        },
+    },
     'title_case': {
         'menu': menu_tabs['case'],
         'title': 'Title Case',
         'dialog': False,
         'command': lambda: edit_ents(lambda x: x.title())
-        },
+    },
     'sentence_case': {
         'menu': menu_tabs['case'],
         'title': 'Sentence case',
         'dialog': False,
         'command': lambda: edit_ents(lambda x: x.capitalize())
-        },
+    },
     # downloads
     'download_sorter': {
         'menu': menu_tabs['downloads'],
         'title': 'Download Sorter',
         'dialog': False,
         'command': lambda: edit_ents(name_cleaner_tv)
-        },
+    },
     'movie_year': {
         'menu': menu_tabs['downloads'],
         'title': 'Movie Year',
         'dialog': False,
         'command': lambda: edit_ents(
             name_cleaner_movieyear)
-        },
+    },
     # snip
     'snip_before': {
         'menu': menu_tabs['snip'],
@@ -545,57 +547,59 @@ Menu_Commands = {
         'text': 'Snip text before and including input string',
         'dialog': True,
         'command': lambda y: snip_text_before(y, dialog_input)
-        },
+    },
     'snip_after': {
         'menu': menu_tabs['snip'],
         'title': 'Snip text after x',
         'text': 'Snip text after and including input string',
         'dialog': True,
         'command': lambda y: snip_text_after(y, dialog_input)
-        },
+    },
     'snip_start': {
         'menu': menu_tabs['snip'],
         'title': 'Snip x chars from start',
         'text': 'Snip x characters from start of name',
         'dialog': True,
         'command': lambda y: snip_start(y, int(dialog_input))
-        },
+    },
     'snip_end': {
         'menu': menu_tabs['snip'],
         'title': 'Snip x chars from end',
         'text': 'Snip x characters from end of name',
         'dialog': True,
         'command': lambda y: snip_end(y, int(dialog_input))
-        },
+    },
     # other
     'replace': {
         'menu': menu_tabs['other'],
         'title': 'Replace x with y',
         'dialog': False,
         'command': dialog_find
-        },
+    },
     'prefix': {
         'menu': menu_tabs['other'],
         'title': 'Prefix',
         'text': 'Prefix to be added to file names (including spaces, dashes underscores etc.)',
         'dialog': True,
         'command': lambda y: dialog_input + y
-        },
+    },
     'suffix': {
         'menu': menu_tabs['other'],
         'title': 'Suffix',
         'text': 'Suffix to be added to file names (including spaces, dashes underscores etc.)',
         'dialog': True,
         'command': lambda y: y + dialog_input
-        }
     }
+}
 
 # loop through the Menu_Commands dic and add commands using the info
 for key in Menu_Commands:  # add command with user input
     if 'text' in Menu_Commands[key]:
-        Menu_Commands[key]['menu'].add_command(label=Menu_Commands[key]['title'], command=lambda title=Menu_Commands[key]['title'], text=Menu_Commands[key]['text'], command=Menu_Commands[key]['command']: dialog_generic(title, text, command))
+        Menu_Commands[key]['menu'].add_command(label=Menu_Commands[key]['title'], command=lambda title=Menu_Commands[key]['title'],
+                                               text=Menu_Commands[key]['text'], command=Menu_Commands[key]['command']: dialog_generic(title, text, command))
     else:  # add generic command
-        Menu_Commands[key]['menu'].add_command(label=Menu_Commands[key]['title'], command=Menu_Commands[key]['command'])
+        Menu_Commands[key]['menu'].add_command(
+            label=Menu_Commands[key]['title'], command=Menu_Commands[key]['command'])
 
 # /=================================================================
 
