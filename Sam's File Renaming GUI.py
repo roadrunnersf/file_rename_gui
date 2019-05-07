@@ -83,7 +83,6 @@ def snip_start(input_string, chars):
 
 
 def name_cleaner_tv(nmc):
-
     tv = nmc
     tv = tv.lower()  # lowercase for ease of search/replace
     tv = tv.replace('.', ' ')  # replace period with space
@@ -105,6 +104,14 @@ def name_cleaner_tv(nmc):
         tv = tv.replace(' ' + x.title() + ' ', ' ' + x + ' ')
     for x in short_words:  # lowercase short words at start of name
         tv = re.sub(f'(?<=S[0-9][0-9]E[0-9][0-9] ){x}', x.title(), tv)
+    return tv
+
+
+def tvnamer_fix(nmc):
+    tv = nmc
+    tv = tv.replace(' - [', ' S')
+    tv = tv.replace('] - ', ' ')
+    tv = re.sub(r'(?<=[0-9][0-9])x(?=[0-9][0-9])', 'E', tv)
     return tv
 
 
@@ -519,6 +526,13 @@ Menu_Commands = {
         'dialog': False,
         'command': lambda: edit_ents(
             name_cleaner_movieyear)
+    },
+    'tvnamer': {
+        'menu': menu_tabs['downloads'],
+        'title': 'TVNamer Fix',
+        'dialog': False,
+        'command': lambda: edit_ents(
+            tvnamer_fix)
     },
     # snip
     'snip_before': {
