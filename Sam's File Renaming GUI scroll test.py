@@ -108,6 +108,14 @@ def name_cleaner_tv(nmc):
     return tv
 
 
+def tvnamer_fix(nmc):
+    tv = nmc
+    tv = tv.replace(' - [', ' S')
+    tv = tv.replace('] - ', ' ')
+    tv = re.sub(r'(?<=[0-9][0-9])x(?=[0-9][0-9])', 'E', tv)
+    return tv
+
+
 def name_cleaner_movieyear(movie_name):
     mv = movie_name
     mv = mv[:len(mv) - 4] + '[' + mv[len(mv) - 4:]
@@ -539,6 +547,13 @@ Menu_Commands = {
         'dialog': False,
         'command': lambda: edit_ents(
             name_cleaner_movieyear)
+    },
+    'tvnamer': {
+        'menu': menu_tabs['downloads'],
+        'title': 'TVNamer Fix',
+        'dialog': False,
+        'command': lambda: edit_ents(
+            tvnamer_fix)
     },
     # snip
     'snip_before': {
