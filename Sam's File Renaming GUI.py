@@ -60,6 +60,19 @@ def file_ext(fle):  # finds just the extension e.g. .mkv
     return fle[-(len(fle) - fle.rfind(".")):]
 
 
+words_not_capitalised = "a an and at at by etc etc for from if in is nor of or so than that the till till to upon with yet".split()
+
+
+def title_case_true(str):
+    str = str.title()
+    for word in words_not_capitalised:
+        str = str.replace(' ' + word.title() + ' ', ' ' + word + ' ')
+    return str
+
+
+title_case_true('pass')
+
+
 def snip_text_after(str, fnd):  # snips text after and including fnd
     if is_part(str, fnd):
         return str[: str.rfind(fnd)]
@@ -95,14 +108,14 @@ def name_cleaner_tv(nmc):
         tv = tv.replace('  ', ' ')  # delete double spaces
     if tv.endswith(' '):
         tv = tv[:-1]
+
     tv = tv.title()  # Title case
+
     tv = tv.replace("'S", "'s")  # replace underscore with space
     for x in ['St', 'Nd', 'Rd', 'Th']:  # 1st 2nd 3rd 4th etc
         tv = re.sub(r'(?<=[0-9]){0}'.format(x), x.lower(), tv)
-    short_words = "of an and for by is from etc a to the".split()
-    for x in short_words:  # lowercase short words in middle of name
-        tv = tv.replace(' ' + x.title() + ' ', ' ' + x + ' ')
-    for x in short_words:  # lowercase short words at start of name
+    tv = title_case_true(tv)
+    for x in words_not_capitalised:  # lowercase short words at start of name
         tv = re.sub(f'(?<=S[0-9][0-9]E[0-9][0-9] ){x}', x.title(), tv)
     return tv
 
