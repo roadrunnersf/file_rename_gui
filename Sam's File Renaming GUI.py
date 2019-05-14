@@ -60,17 +60,22 @@ def file_ext(fle):  # finds just the extension e.g. .mkv
     return fle[-(len(fle) - fle.rfind(".")):]
 
 
-words_not_capitalised = "a an and at at by etc etc for from if in is nor of or so than that the till till to upon with yet".split()
+case_exceptions = {
+    'lower': 'a an and at at by etc etc for from if in is nor of or so than that the till till to upon with yet',
+    'upper': 'AC AFK AKA ASAP BBC BC BRB BTW CC CIA DIY ETA FAQ FBI FYI IDK IMO IMO IRL KO LCD LED LOL NATO NBA NIMBY PR PSI RGB RPG RSVP SOS SUV TBA TV UFO USA VIP WWE WWF'
+}
+
+for key, value in case_exceptions.items():
+    case_exceptions[key] = value.split()
 
 
 def title_case_true(str):
     str = str.title()
-    for word in words_not_capitalised:
+    for word in case_exceptions['lower']:
         str = str.replace(' ' + word.title() + ' ', ' ' + word + ' ')
+    for word in case_exceptions['upper']:
+        str = str.replace(word.title(), word)
     return str
-
-
-title_case_true('pass')
 
 
 def snip_text_after(str, fnd):  # snips text after and including fnd
@@ -115,7 +120,7 @@ def name_cleaner_tv(nmc):
     for x in ['St', 'Nd', 'Rd', 'Th']:  # 1st 2nd 3rd 4th etc
         tv = re.sub(r'(?<=[0-9]){0}'.format(x), x.lower(), tv)
     tv = title_case_true(tv)
-    for x in words_not_capitalised:  # lowercase short words at start of name
+    for x in case_exceptions['lower']:  # lowercase short words at start of name
         tv = re.sub(f'(?<=S[0-9][0-9]E[0-9][0-9] ){x}', x.title(), tv)
     return tv
 
