@@ -60,11 +60,11 @@ def file_ext(fle):  # finds just the extension e.g. .mkv
     return fle[-(len(fle) - fle.rfind(".")):]
 
 
+# words that are exceptions in titles e.g. lowercase 'an' and uppercase 'BBC'
 case_exceptions = {
     'lower': 'a an and at at by etc etc for from if in is nor of or so than that the till till to upon with yet',
-    'upper': 'AC AFK AKA ASAP BBC BC BRB BTW CC CIA DIY ETA FAQ FBI FYI IDK IMO IMO IRL KO LCD LED LOL NATO NBA NIMBY PR PSI RGB RPG RSVP SOS SUV TBA TV UFO USA VIP WWE WWF'
-}
-
+    'upper': 'AC AFK AKA ASAP BBC BC BRB BTW CC CIA DIY ETA FAQ FBI FYI IDK IMO IMO IRL KO LCD LED LOL NATO NBA NIMBY PR PSI RGB RPG RSVP SOS SUV TBA TV UFO USA VIP WWE WWF'}
+# words above are strings for ease of reading but need to be split into lists to be iterable
 for key, value in case_exceptions.items():
     case_exceptions[key] = value.split()
 
@@ -101,6 +101,7 @@ def snip_start(input_string, chars):
 
 
 def name_cleaner_tv(nmc):
+    # performs a large number of cleaning operations on downloaded torrent or TV files
     tv = nmc
     tv = tv.lower()  # lowercase for ease of search/replace
     tv = tv.replace('.', ' ')  # replace period with space
@@ -126,6 +127,7 @@ def name_cleaner_tv(nmc):
 
 
 def tvnamer_fix(nmc):
+    # corrects files named by TVNamer to 'Show S01E01 Title'
     tv = nmc
     tv = tv.replace(' - [', ' S')
     tv = tv.replace('] - ', ' ')
@@ -134,6 +136,7 @@ def tvnamer_fix(nmc):
 
 
 def name_cleaner_movieyear(movie_name):
+    # adds square brackets around 4 digit movie years at the end of a string e.g. 'Babel 2006' --> 'Babel [2006]'
     mv = movie_name
     mv = mv[:len(mv) - 4] + '[' + mv[len(mv) - 4:]
     mv = mv + ']'
@@ -141,6 +144,7 @@ def name_cleaner_movieyear(movie_name):
 
 
 def dialog_find():
+    # dialog box opened by find and replace renaming command
     find_str = simpledialog.askstring('Find', 'String to find (case sensitive).', parent=win)
     replace_str = simpledialog.askstring(
         'Replace', 'Replacement string (case sensitive). Leave blank to delete string from file names.', parent=win)
@@ -148,7 +152,7 @@ def dialog_find():
 
 
 def dialog_generic(dialog_title, dialog_text, dialog_function):
-    global dialog_input
+    # customisable dialog box used by several renaming commands    global dialog_input
     dialog_input = simpledialog.askstring(dialog_title, dialog_text, parent=win)
     edit_ents(dialog_function)
 
@@ -193,6 +197,7 @@ col = attrdict(col)
 
 
 def load_dtry(fldr):
+    # Sets up the dtry list of lists. Input is a folder as a string
     dtry[:] = []  # clear list
     global root_dtry
     root_dtry = fldr
@@ -322,6 +327,7 @@ titles_widgets = []
 
 
 def rename_files():
+    # renames the actual files on the PC using the information in the entry boxes
     def renamer(directory, oldname, newname, extension):
         os.rename(os.path.join(directory.get(), oldname.get() + extension.get()),
                   os.path.join(directory.get(), newname.get() + extension.get())),
@@ -354,6 +360,7 @@ def rename_files():
 
 
 def populate():
+    # populates the file frame with files from the folder in the ent_folder entry box
     for x in ents:
         for y in x:
             y.destroy()
@@ -391,6 +398,7 @@ def populate():
 
 
 def populate_button():  # populate file columns and buttons
+    # makes sure that the folder has files in it (and not too many files). If it does then runs the populate function
     print("Populate-----")
     try:
         total_files = sum([len(files) for r, d, files in os.walk(ent_folder.get())])
@@ -411,6 +419,7 @@ def populate_button():  # populate file columns and buttons
 
 
 def clear_files():
+    # clears the files from the files frame
     print('Clear file list from window-----')
     for x in titles_widgets:
         x.grid_remove()
@@ -432,21 +441,20 @@ def clear_files():
 
 # set up rename button but do not pack
 Buttons = {
-    'populate': {
-        'command': populate_button,
+    'browse': {
+        'command': browse_button,
         'row': 0,
         'column': 1,
         'grid_on_start': True,
         'bg': 'white'
     },
-    'browse': {
-        'command': browse_button,
+    'populate': {
+        'command': populate_button,
         'row': 1,
         'column': 1,
         'grid_on_start': True,
         'bg': 'white'
-    },
-    'clear': {
+    }, 'clear': {
         'command': clear_files,
         'row': 2,
         'column': 1,
@@ -475,11 +483,11 @@ for k in Buttons:
 # ==================================================================
 
 
-def edit_ents(some_function):
-    # apply inputted function to new file name list
+def edit_ents(input_function):
+    # makes changes to the entry boxes in the New File Name column based on the function passed in
     for i, name in enumerate(ents[col.new]):
         ent_text = ents[col.new][i].get()
-        ent_text = some_function(ent_text)
+        ent_text = input_function(ent_text)
         replace_entry_text(ents[col.new][i], ent_text)
 
 
