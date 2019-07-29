@@ -1,5 +1,9 @@
 # Tkinter File Renaming GUI
 
+## Getting Started
+
+Clone the repo and run ### Sam's File Renaming GUI.py
+
 ## Introduction
 
 First, the user pastes in or browses to a folder. The program searches that folder and its child folders for files, and displays the file names as entry boxes in a Tkinter GUI. File names can be edited manually, or operations can be globally performed on them, such as upper case or applying a prefix. Once the files are named to the user's liking, they can be bulk renamed with one click.
