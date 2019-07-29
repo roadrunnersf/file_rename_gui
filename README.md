@@ -4,6 +4,13 @@
 
 Clone the repo and run `Sam's File Renaming GUI.py`
 
+## Workflow
+- Paste a folder path or browse to a folder.
+- Edit file names manually, or apply global operations to all files.
+- When ready, click the 'Rename' button to rename the files.
+- Successful renames will be highlighted green, and unsuccessful ones will be colour coded based on the error type.
+- Detailed information will be printed to the console.
+
 ## Introduction
 
 First, the user pastes in or browses to a folder. The program searches that folder and its child folders for files, and displays the file names as entry boxes in a Tkinter GUI. File names can be edited manually, or operations can be globally performed on them, such as upper case or applying a prefix. Once the files are named to the user's liking, they can be bulk renamed with one click.
