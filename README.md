@@ -38,7 +38,7 @@ The program currently only allows up to 100 files to be displayed at once, as mo
 
 ### Improved window resizing
 
-This will drastically imporove the UX
+This will improve the UX
 
 ### Sub folders check box
 
