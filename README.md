@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-Clone the repo and run ### Sam's File Renaming GUI.py
+Clone the repo and run `Sam's File Renaming GUI.py`
 
 ## Introduction
 
